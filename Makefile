@@ -16,10 +16,10 @@ fmt:
 	@gofmt -w .
 
 test:
-	@go test -v ./...
+	@go test -v ./... -race
 
 coverage:
-	@go test ./... -cover -coverprofile=coverage.out
+	@go test ./... -cover -race -coverprofile=coverage.out -covermode=atomic
 	@go tool cover -html=coverage.out -o coverage.html
 
 sonar:
