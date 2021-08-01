@@ -1,0 +1,3 @@
+ignore:
+  - "assert.go"  # ignore test utilities
+  
