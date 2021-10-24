@@ -15,12 +15,12 @@ func TestFileServer(t *testing.T) {
 		{
 			dir:         ".github/",
 			path:        "/labeler.yml",
-			contentType: MIMETextPlainCharsetUTF8,
+			contentType: "application/x-yaml",
 		},
 		{
 			dir:         ".github/",
 			path:        "labeler.yml",
-			contentType: MIMETextPlainCharsetUTF8,
+			contentType: "application/x-yaml",
 		},
 		{
 			dir:         "./",

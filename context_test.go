@@ -225,7 +225,7 @@ func TestContextFile(t *testing.T) {
 	header := rr.Header()
 
 	assertEqual(t, http.StatusOK, rr.Code)
-	assertEqual(t, MIMETextPlainCharsetUTF8, header.Get(HeaderContentType))
+	assertEqual(t, "text/x-go; charset=utf-8", header.Get(HeaderContentType))
 }
 
 func TestContextNoContent(t *testing.T) {
