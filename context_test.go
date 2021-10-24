@@ -111,9 +111,11 @@ func TestContextParam(t *testing.T) {
 
 	c.AddParam("name", "foo")
 	assertEqual(t, "foo", c.Param("name"))
+	assertEqual(t, "foo", c.ParamOrDefault("name", "bar"))
 
 	c.DeleteParam("name")
 	assertEqual(t, "", c.Param("name"))
+	assertEqual(t, "bar", c.ParamOrDefault("name", "bar"))
 }
 
 func TestContextHeader(t *testing.T) {

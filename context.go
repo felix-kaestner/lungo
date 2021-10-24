@@ -81,6 +81,17 @@ func (c *Context) Param(key string) string {
 	return c.Params.Get(key)
 }
 
+// Get gets the first value associated with the given key or
+// the provided default value if there are no values associated
+// with the key.
+func (c *Context) ParamOrDefault(key, val string) string {
+	p := c.Param(key)
+	if p == "" {
+		return val
+	}
+	return p
+}
+
 // Set sets the key to value. It replaces any existing
 // values.
 func (c *Context) SetParam(key, value string) {
