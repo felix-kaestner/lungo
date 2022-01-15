@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -225,7 +226,11 @@ func TestContextFile(t *testing.T) {
 	header := rr.Header()
 
 	assertEqual(t, http.StatusOK, rr.Code)
-	assertEqual(t, "text/x-go; charset=utf-8", header.Get(HeaderContentType))
+
+	ct := header.Get(HeaderContentType)
+	if ct != "text/x-go; charset=utf-8" && ct != MIMETextPlainCharsetUTF8 {
+		t.Errorf("Test %s: Expected HTTP Content-Type to be either `%v` or `%v` (type string), Received `%v` (type %v)", t.Name(), "text/x-go; charset=utf-8", "text/plain; charset=utf-8", ct, reflect.TypeOf(ct))
+	}
 }
 
 func TestContextNoContent(t *testing.T) {

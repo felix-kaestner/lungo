@@ -3,6 +3,7 @@ package lungo
 import (
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 )
 
@@ -45,6 +46,10 @@ func TestFileServer(t *testing.T) {
 		})
 
 		header := rr.Header()
-		assertEqual(t, testcase.contentType, header.Get(HeaderContentType))
+
+		ct := header.Get(HeaderContentType)
+		if ct != testcase.contentType && ct != MIMETextPlainCharsetUTF8 {
+			t.Errorf("Test %s: Expected HTTP Content-Type to be either `%v` or `%v` (type string), Received `%v` (type %v)", t.Name(), testcase.contentType, "text/plain; charset=utf-8", ct, reflect.TypeOf(ct))
+		}
 	}
 }
