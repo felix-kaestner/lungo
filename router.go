@@ -10,7 +10,6 @@ import (
 
 // Router is an HTTP request multiplexer.
 type Router struct {
-	mux         *http.ServeMux
 	mutex       sync.RWMutex
 	routes      map[string]map[string]Route
 	middlewares []Middleware
