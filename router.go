@@ -17,10 +17,14 @@ type Router struct {
 }
 
 const (
-	ExceptionInvalidRouteMethod = "Invalid method. The method of a handler must be a valid http method."
-	ExceptionEmptyRoutePath     = "Invalid pattern. The path of a handler can't be empty."
-	ExceptionNilRouteHandler    = "Nil handler. The handler can't be nil."
-	ExceptionDuplicateHandler   = "Duplicate path. Path `%s` already contains a http handler."
+	// ErrInvalidRouteMethod is returned when the route method is invalid.
+	ErrInvalidRouteMethod = "Invalid method. The method of a handler must be a valid http method."
+	// ErrEmptyRoutePath is returned when the route path is empty.
+	ErrEmptyRoutePath = "Invalid pattern. The path of a handler can't be empty."
+	// ErrNilRouteHandler is returned when the route handler is nil.
+	ErrNilRouteHandler = "Nil handler. The handler can't be nil."
+	// ErrDuplicateHandler is returned when a route handler is already registered for a given path.
+	ErrDuplicateHandler = "Duplicate path. Path `%s` already contains a http handler."
 )
 
 // NewRouter allocates and returns a new router instance.
@@ -35,19 +39,19 @@ func (router *Router) Handle(route Route) {
 	defer router.mutex.Unlock()
 
 	if !IsValidMethod(route.Method) {
-		panic(ExceptionInvalidRouteMethod)
+		panic(ErrInvalidRouteMethod)
 	}
 	if route.Path == "" {
-		panic(ExceptionEmptyRoutePath)
+		panic(ErrEmptyRoutePath)
 	}
 	if route.Handler == nil {
-		panic(ExceptionNilRouteHandler)
+		panic(ErrNilRouteHandler)
 	}
 
 	if router.routes[route.Method] == nil {
 		router.routes[route.Method] = make(map[string]Route)
 	} else if _, exist := router.routes[route.Method][route.Path]; exist {
-		panic(fmt.Sprintf(ExceptionDuplicateHandler, route.Path))
+		panic(fmt.Sprintf(ErrDuplicateHandler, route.Path))
 	}
 
 	router.routes[route.Method][route.Path] = route

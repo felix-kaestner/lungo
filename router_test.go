@@ -8,7 +8,7 @@ import (
 )
 
 func TestRouterInvalidRouteMethod(t *testing.T) {
-	assertPanic(t, ExceptionInvalidRouteMethod, func() {
+	assertPanic(t, ErrInvalidRouteMethod, func() {
 		router := NewRouter()
 
 		router.Handle(Route{
@@ -19,7 +19,7 @@ func TestRouterInvalidRouteMethod(t *testing.T) {
 		})
 	})
 
-	assertPanic(t, ExceptionInvalidRouteMethod, func() {
+	assertPanic(t, ErrInvalidRouteMethod, func() {
 		router := NewRouter()
 
 		router.Handle(Route{
@@ -31,7 +31,7 @@ func TestRouterInvalidRouteMethod(t *testing.T) {
 		})
 	})
 
-	assertPanic(t, ExceptionInvalidRouteMethod, func() {
+	assertPanic(t, ErrInvalidRouteMethod, func() {
 		router := NewRouter()
 
 		router.Handle(Route{
@@ -45,7 +45,7 @@ func TestRouterInvalidRouteMethod(t *testing.T) {
 }
 
 func TestRouterHandleEmptyPath(t *testing.T) {
-	assertPanic(t, ExceptionEmptyRoutePath, func() {
+	assertPanic(t, ErrEmptyRoutePath, func() {
 		router := NewRouter()
 
 		router.Handle(Route{
@@ -56,7 +56,7 @@ func TestRouterHandleEmptyPath(t *testing.T) {
 		})
 	})
 
-	assertPanic(t, ExceptionEmptyRoutePath, func() {
+	assertPanic(t, ErrEmptyRoutePath, func() {
 		router := NewRouter()
 
 		router.Handle(Route{
@@ -70,7 +70,7 @@ func TestRouterHandleEmptyPath(t *testing.T) {
 }
 
 func TestRouterHandleNilHandler(t *testing.T) {
-	assertPanic(t, ExceptionNilRouteHandler, func() {
+	assertPanic(t, ErrNilRouteHandler, func() {
 		router := NewRouter()
 
 		router.Handle(Route{
@@ -79,7 +79,7 @@ func TestRouterHandleNilHandler(t *testing.T) {
 		})
 	})
 
-	assertPanic(t, ExceptionNilRouteHandler, func() {
+	assertPanic(t, ErrNilRouteHandler, func() {
 		router := NewRouter()
 
 		router.Handle(Route{
@@ -101,7 +101,7 @@ func TestRouterHandleDuplicateHandler(t *testing.T) {
 		}),
 	})
 
-	assertPanic(t, fmt.Sprintf(ExceptionDuplicateHandler, "/"), func() {
+	assertPanic(t, fmt.Sprintf(ErrDuplicateHandler, "/"), func() {
 		router.Handle(Route{
 			Method: http.MethodGet,
 			Path:   "/",
