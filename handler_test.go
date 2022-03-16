@@ -20,7 +20,7 @@ func TestWithContext(t *testing.T) {
 	}
 
 	handler := WithContext(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		c := r.Context().Value("context")
+		c := r.Context().Value(ContextKey)
 		assertEqual(t, ctx, c)
 
 		w.WriteHeader(http.StatusOK)
