@@ -6,7 +6,7 @@ import (
 )
 
 type (
-	// A Handler responds to an HTTP request.
+	// Handler is the generic interface for responding to an HTTP request.
 	//
 	// ServeHTTP should write reply headers and data to the ResponseWriter
 	// and then return. Returning signals that the request is finished; it
@@ -34,22 +34,22 @@ type (
 		ServeHTTP(c *Context) error
 	}
 
-	// `Middleware` is a function which receives an Handler and returns another Handler.
+	// Middleware is a function which receives an Handler and returns another Handler.
 	Middleware func(Handler) Handler
 
-	// The HandlerFunc type is an adapter to allow the use of
+	// HandlerFunc is the type of an adapter to allow the use of
 	// ordinary functions as HTTP handlers. If f is a function
 	// with the appropriate signature, HandlerFunc(f) is a
 	// Handler that calls f.
 	HandlerFunc func(c *Context) error
 )
 
-// `ServeHTTP` implements the Handler interface for
+// ServeHTTP implements the Handler interface for
 // HandlerFunc by simply returning the function call
 // with the provided context
 func (h HandlerFunc) ServeHTTP(c *Context) error { return h(c) }
 
-// `WithContext` is an adapter to allow the usage of http.Handler
+// WithContext is an adapter to allow the usage of http.Handler
 // with the context based API provided by Lungo
 func WithContext(handler http.Handler) HandlerFunc {
 	return HandlerFunc(func(c *Context) error {

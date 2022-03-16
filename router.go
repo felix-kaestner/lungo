@@ -28,7 +28,7 @@ func NewRouter() *Router {
 	return &Router{routes: make(map[string]map[string]Route), middlewares: make([]Middleware, 0)}
 }
 
-// Register a Handler for the given path.
+// Handle registers a Handler for the given path.
 // This will panic, if the path already has a Handler registered.
 func (router *Router) Handle(route Route) {
 	router.mutex.Lock()
@@ -53,7 +53,7 @@ func (router *Router) Handle(route Route) {
 	router.routes[route.Method][route.Path] = route
 }
 
-// `Use` adds a Middleware to the router.
+// Use adds a Middleware to the router.
 // Middleware can be used to intercept or otherwise modify requests.
 // The are executed in the order that they are applied to the Router (FIFO).
 func (router *Router) Use(middlewares ...Middleware) {

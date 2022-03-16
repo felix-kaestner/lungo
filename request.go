@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Return a canonical path for p, eliminating . and .. elements.
+// Canonical returns a canonical path for p, eliminating . and .. elements.
 func Canonical(p string) string {
 	if p == "" {
 		return "/"
@@ -33,7 +33,7 @@ func Canonical(p string) string {
 	return cp
 }
 
-// Check if the provided http method is valid
+// IsValidMethod checks if the provided http method is valid
 func IsValidMethod(method string) bool {
 	if method == "" {
 		return false

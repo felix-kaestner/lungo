@@ -22,7 +22,7 @@ type Context struct {
 	Params   url.Values          `json:"params"`
 }
 
-// `Reset` applies the given request to the Context instance.
+// Reset applies the given request to the Context instance.
 //
 // The `App` property is assumed to be static, thus it will not be changed.
 func (c *Context) Reset(w http.ResponseWriter, r *http.Request) {
@@ -33,14 +33,14 @@ func (c *Context) Reset(w http.ResponseWriter, r *http.Request) {
 	c.Params = params
 }
 
-// `Flush` implements the http.Flusher interface to allow an HTTP handler to flush
+// Flush implements the http.Flusher interface to allow an HTTP handler to flush
 // buffered data to the client.
 // See [http.Flusher](https://golang.org/pkg/net/http/#Flusher)
 func (c *Context) Flush() {
 	c.Response.(http.Flusher).Flush()
 }
 
-// `Hijack` implements the http.Hijacker interface to allow an HTTP handler to
+// Hijack implements the http.Hijacker interface to allow an HTTP handler to
 // take over the connection.
 // See [http.Hijacker](https://golang.org/pkg/net/http/#Hijacker)
 func (c *Context) Hijack() (net.Conn, *bufio.ReadWriter, error) {
@@ -57,7 +57,7 @@ func (c *Context) Method() string {
 	return c.Request.Method
 }
 
-// URL specifies either the URI being requested (for server
+// Path specifies either the URI being requested (for server
 // requests) or the URL to access (for client requests).
 //
 // For server requests, the URL is parsed from the URI
@@ -73,7 +73,7 @@ func (c *Context) Path() string {
 	return c.Request.URL.Path
 }
 
-// Get gets the first value associated with the given key.
+// Param gets the first value associated with the given parameter.
 // If there are no values associated with the key, Get returns
 // the empty string. To access multiple values, use the map
 // directly.
@@ -81,8 +81,8 @@ func (c *Context) Param(key string) string {
 	return c.Params.Get(key)
 }
 
-// Get gets the first value associated with the given key or
-// the provided default value if there are no values associated
+// ParamOrDefault gets the first value associated with the given parameter
+// or the provided default value if there are no values associated
 // with the key.
 func (c *Context) ParamOrDefault(key, val string) string {
 	p := c.Param(key)
@@ -92,25 +92,25 @@ func (c *Context) ParamOrDefault(key, val string) string {
 	return p
 }
 
-// Set sets the key to value. It replaces any existing
+// SetParam sets the parameter value. It replaces any existing
 // values.
 func (c *Context) SetParam(key, value string) {
 	c.Params.Set(key, value)
 }
 
-// Add adds the value to key. It appends to any existing
-// values associated with key.
+// AddParam adds the value to the parameter's values. It appends
+// to any existing values associated with key.
 func (c *Context) AddParam(key, value string) {
 	c.Params.Add(key, value)
 }
 
-// Del deletes the values associated with key.
+// DeleteParam deletes the values associated with the parameter.
 func (c *Context) DeleteParam(key string) {
 	c.Params.Del(key)
 }
 
-// Get gets the first value associated with the given key. If
-// there are no values associated with the key, Get returns "".
+// Header gets the first value associated with the given key. If
+// there are no values associated with the key, it returns "".
 // It is case insensitive; textproto.CanonicalMIMEHeaderKey is
 // used to canonicalize the provided key. To use non-canonical keys,
 // access the map directly.
@@ -118,7 +118,7 @@ func (c *Context) Header(key string) string {
 	return c.Request.Header.Get(key)
 }
 
-// Set sets the header entries associated with key to the
+// SetHeader sets the header entries associated with key to the
 // single element value. It replaces any existing values
 // associated with key. The key is case insensitive; it is
 // canonicalized by textproto.CanonicalMIMEHeaderKey.
@@ -127,7 +127,7 @@ func (c *Context) SetHeader(key, value string) {
 	c.Response.Header().Set(key, value)
 }
 
-// Add adds the key, value pair to the header.
+// AddHeader adds the key, value pair to the header.
 // It appends to any existing values associated with key.
 // The key is case insensitive; it is canonicalized by
 // CanonicalHeaderKey.
@@ -187,7 +187,7 @@ func (c *Context) ParseMediaType() (mediatype string, params map[string]string, 
 	return mime.ParseMediaType(ct)
 }
 
-// Dispatch a error response.
+// Error dispatches a error response.
 // Use the method parameter `code` to set status code of the response.
 // The message will automatically be set to the corresponding http.StatusText.
 func (c *Context) Error(code int) (err error) {
@@ -195,7 +195,7 @@ func (c *Context) Error(code int) (err error) {
 	return
 }
 
-// Dispatch a error response.
+// Errorf dispatches a error response with custom message.
 // Use the method parameter `code` to set status code of the response.
 // Use the method parameter `message` to set the message of the response.
 func (c *Context) Errorf(code int, message interface{}) (err error) {
@@ -204,14 +204,14 @@ func (c *Context) Errorf(code int, message interface{}) (err error) {
 	return
 }
 
-// Dispatch a response serving a file.
+// File dispatches a response serving a file.
 // Use the method parameter `name` to supply the filename.
 func (c *Context) File(name string) (err error) {
 	http.ServeFile(c.Response, c.Request, name)
 	return
 }
 
-// Dispatch an empty response with an HTTP 204 status code.
+// NoContent dispatchss an empty response with an HTTP 204 status code.
 func (c *Context) NoContent() (err error) {
 	c.WriteHeader(http.StatusNoContent)
 	return
@@ -222,7 +222,7 @@ func (c *Context) NotFound() error {
 	return c.Error(http.StatusNotFound)
 }
 
-// Dispatch a text response.
+// Text dispatches a text response.
 // Use the method parameter `code` to set the header status code.
 // Use the method parameter `value` to supply the object to be serialized to text.
 func (c *Context) Text(code int, value interface{}) (err error) {
@@ -232,7 +232,7 @@ func (c *Context) Text(code int, value interface{}) (err error) {
 	return
 }
 
-// Dispatch a JSON response.
+// Json dispatches a JSON response.
 // Use the method parameter `code` to set the header status code.
 // Use the method parameter `value` to supply the object to be serialized to JSON.
 func (c *Context) Json(code int, value interface{}) (err error) {
@@ -242,7 +242,7 @@ func (c *Context) Json(code int, value interface{}) (err error) {
 	return
 }
 
-// Decode an object with a given interface from a JSON request.
+// DecodeJSONBody decodes an object with a given interface from a JSON request body.
 func (c *Context) DecodeJSONBody(dst interface{}) error {
 
 	// check that the the Content-Type header has the value application/json.

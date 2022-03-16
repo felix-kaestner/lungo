@@ -181,7 +181,7 @@ const (
 )
 
 type (
-	// Generic map of type `map[string]interface{}`.
+	// Map is a shorthand of type `map[string]interface{}`.
 	Map map[string]interface{}
 )
 

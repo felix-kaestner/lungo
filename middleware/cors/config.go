@@ -2,6 +2,7 @@ package cors
 
 import "net/http"
 
+// Config defines the configuration options for the CORS middleware
 type Config struct {
 	// AllowOrigins defines a list of origins that may access the resource.
 	//
@@ -41,6 +42,8 @@ type Config struct {
 	MaxAge int
 }
 
+// DefaultConfig contains the default value for the
+// CORS middleware configuration
 var DefaultConfig = &Config{
 	AllowOrigins:     []string{"*"},
 	AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPost, http.MethodPatch, http.MethodDelete},

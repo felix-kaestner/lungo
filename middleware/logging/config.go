@@ -4,6 +4,7 @@ import (
 	"log"
 )
 
+// Config defines the configuration options for the logging middleware
 type Config struct {
 	// Template defines the logging format as a text/template string.
 	//
@@ -29,6 +30,8 @@ type Config struct {
 	CallDepth int
 }
 
+// DefaultConfig contains the default value for the
+// logging middleware configuration
 var DefaultConfig = &Config{
 	Template:  "{{.Request.Method}} {{.Request.URL.Path}} {{.Duration.String}}",
 	Logger:    log.Default(),

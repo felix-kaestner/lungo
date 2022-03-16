@@ -1,5 +1,6 @@
 package secure
 
+// Config defines the configuration options for the secure middleware
 type Config struct {
 	// XSSProtection provides protection against cross-site scripting attack (XSS)
 	// by setting the `X-XSS-Protection` header.
@@ -56,6 +57,8 @@ type Config struct {
 	ReferrerPolicy string
 }
 
+// DefaultConfig contains the default value for the
+// secure middleware configuration
 var DefaultConfig = &Config{
 	XSSProtection:         "1; mode=block",
 	XFrameOptions:         "SAMEORIGIN",

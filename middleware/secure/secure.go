@@ -4,6 +4,7 @@ import (
 	"github.com/felix-kaestner/lungo"
 )
 
+// New creates a new secure middleware instance
 func New(configure ...func(*Config)) lungo.Middleware {
 	config := new(Config)
 	*config = *DefaultConfig

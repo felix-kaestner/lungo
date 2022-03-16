@@ -18,7 +18,7 @@ type App struct {
 	server *http.Server
 }
 
-// `New` creates an instance of App.
+// New creates an instance of App.
 func New(configure ...func(*Config)) (app *App) {
 	app = &App{
 		router: NewRouter(),
@@ -37,7 +37,7 @@ func New(configure ...func(*Config)) (app *App) {
 	return
 }
 
-// `NewContext` returns a new Context instance.
+// NewContext returns a new Context instance.
 //
 // It serves as an adapter for http.Handlerfunc and converts the
 // request to the context based API provided by Lungo.
@@ -51,103 +51,103 @@ func (app *App) NewContext(w http.ResponseWriter, r *http.Request) *Context {
 	}
 }
 
-// `Server` returns the http.Server instance of the application
+// Server returns the http.Server instance of the application
 func (app *App) Server() *http.Server {
 	return app.server
 }
 
-// `Config` returns the Config instance of the application
+// Config returns the Config instance of the application
 func (app *App) Config() *Config {
 	return app.config
 }
 
-// `AcquireContext` acquires a empty context instance from the pool.
+// AcquireContext acquires a empty context instance from the pool.
 // This context instance must be released by calling `ReleaseContext()`.
 func (app *App) AcquireContext() *Context {
 	return app.pool.Get().(*Context)
 }
 
-// `ReleaseContext` releases the context instance back to the pool.
+// ReleaseContext releases the context instance back to the pool.
 // The context instace must first be acquired by calling `AcquireContext()`.
 func (app *App) ReleaseContext(c *Context) {
 	app.pool.Put(c)
 }
 
-// `Get` adds a new Route with http method "GET" to the Router of the application.
+// Get adds a new Route with http method "GET" to the Router of the application.
 func (app *App) Get(path string, handler HandlerFunc) {
 	app.Handle(http.MethodGet, path, handler)
 }
 
-// `Head` adds a new Route with http method "HEAD" to the Router of the application.
+// Head adds a new Route with http method "HEAD" to the Router of the application.
 func (app *App) Head(path string, handler HandlerFunc) {
 	app.Handle(http.MethodHead, path, handler)
 }
 
-// `Post` adds a new Route with http method "POST" to the Router of the application.
+// Post adds a new Route with http method "POST" to the Router of the application.
 func (app *App) Post(path string, handler HandlerFunc) {
 	app.Handle(http.MethodPost, path, handler)
 }
 
-// `Put` adds a new Route with http method "PUT" to the Router of the application.
+// Put adds a new Route with http method "PUT" to the Router of the application.
 func (app *App) Put(path string, handler HandlerFunc) {
 	app.Handle(http.MethodPut, path, handler)
 }
 
-// `Patch` adds a new Route with http method "PATCH" to the Router of the application.
+// Patch adds a new Route with http method "PATCH" to the Router of the application.
 func (app *App) Patch(path string, handler HandlerFunc) {
 	app.Handle(http.MethodPatch, path, handler)
 }
 
-// `Delete` adds a new Route with http method "DELETE" to the Router of the application.
+// Delete adds a new Route with http method "DELETE" to the Router of the application.
 func (app *App) Delete(path string, handler HandlerFunc) {
 	app.Handle(http.MethodDelete, path, handler)
 }
 
-// `Connect` adds a new Route with http method "CONNECT" to the Router of the application.
+// Connect adds a new Route with http method "CONNECT" to the Router of the application.
 func (app *App) Connect(path string, handler HandlerFunc) {
 	app.Handle(http.MethodConnect, path, handler)
 }
 
-// `Options` adds a new Route with http method "OPTIONS" to the Router of the application.
+// Options adds a new Route with http method "OPTIONS" to the Router of the application.
 func (app *App) Options(path string, handler HandlerFunc) {
 	app.Handle(http.MethodOptions, path, handler)
 }
 
-// `Trace` adds a new Route with http method "TRACE" to the Router of the application.
+// Trace adds a new Route with http method "TRACE" to the Router of the application.
 func (app *App) Trace(path string, handler HandlerFunc) {
 	app.Handle(http.MethodTrace, path, handler)
 }
 
-// `Handle` adds a new Route with the specified http method to the Router of the application.
+// Handle adds a new Route with the specified http method to the Router of the application.
 func (app *App) Handle(method, path string, handler HandlerFunc) {
 	app.router.Handle(Route{Method: method, Path: path, Handler: handler})
 }
 
-// `All` adds a new Route on all HTTP methods to the Router of the application.
+// All adds a new Route on all HTTP methods to the Router of the application.
 func (app *App) All(path string, handler HandlerFunc) {
 	for _, method := range methods {
 		app.Handle(method, path, handler)
 	}
 }
 
-// `Static` adds a new Route to the Router of the application, which serves static files.
+// Static adds a new Route to the Router of the application, which serves static files.
 func (app *App) Static(path, root string) {
 	app.router.Handle(Route{Method: http.MethodGet, Path: path, Handler: FileHandler(root)})
 }
 
-// `Use` adds a Middleware to the router.
+// Use adds a Middleware to the router.
 // Middleware can be used to intercept or otherwise modify requests.
 // The are executed in the order that they are applied to the Router (FIFO).
 func (app *App) Use(middlewares ...Middleware) {
 	app.router.Use(middlewares...)
 }
 
-// `Mount` adds a new app which handles requests on the specified pattern.
+// Mount adds a new app which handles requests on the specified pattern.
 func (app *App) Mount(pattern string, group *App) {
 	app.All(pattern, WithContext(http.StripPrefix(pattern, group)))
 }
 
-// `HandleError` is a centralized error handler function which resolves the
+// HandleError is a centralized error handler function which resolves the
 // provided error and replies to the request with the specified error message
 // and HTTP code. The error message is written as plain text.
 // JSON response with status code and message.
@@ -163,7 +163,7 @@ func (app *App) HandleError(c *Context, e error) {
 	http.Error(c.Response, re.Message, re.Code)
 }
 
-// `ServeHTTP` implements the http.Handler interface which
+// ServeHTTP implements the http.Handler interface which
 // is used by the http.Server to dispatch requests.
 //
 // It serves as an adapter for http.Handler and converts the
@@ -219,7 +219,7 @@ func (app *App) ServeTLS(l net.Listener, certFile, keyFile string) error {
 	return app.server.ServeTLS(l, certFile, keyFile)
 }
 
-// ListenAndServe listens on the TCP network address addr and then calls
+// Listen listens on the TCP network address addr and then calls
 // Serve with handler to handle requests on incoming connections.
 // Accepted connections are configured to enable TCP keep-alives.
 //
@@ -233,7 +233,7 @@ func (app *App) Listen(addr string) error {
 	return app.server.ListenAndServe()
 }
 
-// ListenAndServeTLS acts identically to ListenAndServe, except that it
+// ListenTLS acts identically to Listen, except that it
 // expects HTTPS connections. Additionally, files containing a certificate and
 // matching private key for the server must be provided. If the certificate
 // is signed by a certificate authority, the certFile should be the concatenation

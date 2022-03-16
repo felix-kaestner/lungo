@@ -14,8 +14,8 @@ func (redirect *Redirect) ServeHTTP(c *Context) error {
 	return nil
 }
 
-// Create a new Handler that redirects requests it receives to a
-// given URL using the provided status code.
+// RedirectHandler creates a new Handler that redirects requests it receives
+// to a given URL using the provided status code.
 //
 // The provided status code should be in the 3xx range and is usually
 // http.StatusMovedPermanently, http.StatusFound or http.StatusSeeOther.

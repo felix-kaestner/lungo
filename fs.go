@@ -10,7 +10,7 @@ type FileServer struct {
 	root http.Dir
 }
 
-// `ServeHTTP` implements the Handler interface
+// ServeHTTP implements the Handler interface for the file server.
 func (f *FileServer) ServeHTTP(c *Context) error {
 	fp := path.Join(string(f.root), c.Request.URL.Path)
 	if _, err := os.Stat(fp); err != nil {
@@ -20,7 +20,7 @@ func (f *FileServer) ServeHTTP(c *Context) error {
 	return c.File(fp)
 }
 
-// Create a new Handler that serves static files in a directory.
+// FileHandler creates a new Handler that serves static files in a directory.
 func FileHandler(root string) Handler {
 	return &FileServer{root: http.Dir(root)}
 }
