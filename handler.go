@@ -44,6 +44,10 @@ type (
 	HandlerFunc func(c *Context) error
 )
 
+// ContextKey defines the key to retrieve the Lungo context
+// context from the request context
+var ContextKey = &struct{}{}
+
 // ServeHTTP implements the Handler interface for
 // HandlerFunc by simply returning the function call
 // with the provided context
@@ -53,7 +57,7 @@ func (h HandlerFunc) ServeHTTP(c *Context) error { return h(c) }
 // with the context based API provided by Lungo
 func WithContext(handler http.Handler) HandlerFunc {
 	return HandlerFunc(func(c *Context) error {
-		ctx := context.WithValue(c.Request.Context(), "context", c)
+		ctx := context.WithValue(c.Request.Context(), ContextKey, c)
 		handler.ServeHTTP(c.Response, c.Request.WithContext(ctx))
 		return nil
 	})
