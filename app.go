@@ -269,7 +269,7 @@ func (app *App) Shutdown(ctx context.Context) error {
 	app.mutex.RLock()
 	defer app.mutex.RUnlock()
 	if app.server == nil {
-		return fmt.Errorf("Shutdown: Server is not running.")
+		return fmt.Errorf("Shutdown: Server is not running")
 	}
 	return app.server.Shutdown(ctx)
 }
