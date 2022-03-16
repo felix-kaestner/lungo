@@ -6,12 +6,12 @@ import (
 	"path"
 )
 
-type FileServer struct {
+type fileServer struct {
 	root http.Dir
 }
 
 // ServeHTTP implements the Handler interface for the file server.
-func (f *FileServer) ServeHTTP(c *Context) error {
+func (f *fileServer) ServeHTTP(c *Context) error {
 	fp := path.Join(string(f.root), c.Request.URL.Path)
 	if _, err := os.Stat(fp); err != nil {
 		return c.NotFound()
@@ -22,5 +22,5 @@ func (f *FileServer) ServeHTTP(c *Context) error {
 
 // FileHandler creates a new Handler that serves static files in a directory.
 func FileHandler(root string) Handler {
-	return &FileServer{root: http.Dir(root)}
+	return &fileServer{root: http.Dir(root)}
 }
