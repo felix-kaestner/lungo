@@ -219,7 +219,7 @@ func TestAppShutdown(t *testing.T) {
 	err := app.Shutdown(ctx)
 
 	assertNotNil(t, err)
-	assertEqual(t, "Shutdown: Server is not running.", err.Error())
+	assertEqual(t, "Shutdown: Server is not running", err.Error())
 }
 
 func TestApp(t *testing.T) {
