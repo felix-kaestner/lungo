@@ -4,7 +4,7 @@ import "net/http"
 
 const (
 	// Version of Lungo
-	Version = "0.0.1"
+	Version = "1.0.1"
 
 	// Website of Lungo
 	Website = "https://github.com/felix-kaestner/lungo"
