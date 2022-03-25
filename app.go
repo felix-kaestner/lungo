@@ -23,7 +23,7 @@ func New(configure ...func(*Config)) (app *App) {
 	app = &App{
 		router: NewRouter(),
 		pool: sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return &Context{App: app}
 			},
 		},

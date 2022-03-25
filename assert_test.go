@@ -8,7 +8,7 @@ import (
 func TestAssertNil(t *testing.T) {
 	assertNil(t, nil)
 
-	i := (*interface{})(nil)
+	i := (*any)(nil)
 	assertNil(t, i)
 
 	var s []int
@@ -41,7 +41,7 @@ func TestAssertNotNil(t *testing.T) {
 func TestAssertEqualNil(t *testing.T) {
 	assertEqual(t, nil, nil)
 
-	i := (*interface{})(nil)
+	i := (*any)(nil)
 	assertEqual(t, i, i)
 
 	var s []int

@@ -9,7 +9,7 @@ import (
 	"github.com/felix-kaestner/lungo"
 )
 
-func assertEqual(t *testing.T, expected, actual interface{}) {
+func assertEqual(t *testing.T, expected, actual any) {
 	if reflect.DeepEqual(expected, actual) {
 		return
 	}
