@@ -198,7 +198,7 @@ func (c *Context) Error(code int) (err error) {
 // Errorf dispatches a error response with custom message.
 // Use the method parameter `code` to set status code of the response.
 // Use the method parameter `message` to set the message of the response.
-func (c *Context) Errorf(code int, message interface{}) (err error) {
+func (c *Context) Errorf(code int, message any) (err error) {
 	msg := fmt.Sprintf("%v", message)
 	err = &RequestError{Code: code, Message: msg}
 	return
@@ -225,7 +225,7 @@ func (c *Context) NotFound() error {
 // Text dispatches a text response.
 // Use the method parameter `code` to set the header status code.
 // Use the method parameter `value` to supply the object to be serialized to text.
-func (c *Context) Text(code int, value interface{}) (err error) {
+func (c *Context) Text(code int, value any) (err error) {
 	c.SetHeader(HeaderContentType, MIMETextPlain)
 	c.WriteHeader(code)
 	_, err = fmt.Fprint(c.Response, value)
@@ -235,7 +235,7 @@ func (c *Context) Text(code int, value interface{}) (err error) {
 // Json dispatches a JSON response.
 // Use the method parameter `code` to set the header status code.
 // Use the method parameter `value` to supply the object to be serialized to JSON.
-func (c *Context) Json(code int, value interface{}) (err error) {
+func (c *Context) Json(code int, value any) (err error) {
 	c.SetHeader(HeaderContentType, MIMEApplicationJSON)
 	c.WriteHeader(code)
 	err = json.NewEncoder(c.Response).Encode(value)
@@ -243,7 +243,7 @@ func (c *Context) Json(code int, value interface{}) (err error) {
 }
 
 // DecodeJSONBody decodes an object with a given interface from a JSON request body.
-func (c *Context) DecodeJSONBody(dst interface{}) error {
+func (c *Context) DecodeJSONBody(dst any) error {
 
 	// check that the the Content-Type header has the value application/json.
 	if mt, _, err := c.ParseMediaType(); err != nil || !strings.HasPrefix(mt, MIMEApplicationJSON) {

@@ -6,7 +6,7 @@ type Config struct {
 	// the stack trace of the panic.
 	//
 	// Optional. Default: nil
-	HandleStackTrace func(e interface{})
+	HandleStackTrace func(e any)
 }
 
 // DefaultConfig contains the default value for the

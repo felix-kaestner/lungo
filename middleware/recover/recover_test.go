@@ -9,7 +9,7 @@ import (
 	"github.com/felix-kaestner/lungo"
 )
 
-func assertEqual(t *testing.T, expected, actual interface{}) {
+func assertEqual(t *testing.T, expected, actual any) {
 	if reflect.DeepEqual(expected, actual) {
 		return
 	}
@@ -30,7 +30,7 @@ func TestRecover(t *testing.T) {
 		},
 		{
 			middleware: New(func(c *Config) {
-				c.HandleStackTrace = func(e interface{}) {
+				c.HandleStackTrace = func(e any) {
 					assertEqual(t, "Error", e)
 				}
 			}),

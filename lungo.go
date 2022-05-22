@@ -181,8 +181,8 @@ const (
 )
 
 type (
-	// Map is a shorthand of type `map[string]interface{}`.
-	Map map[string]interface{}
+	// Map is a shorthand of type `map[string]any`.
+	Map map[string]any
 )
 
 // Common HTTP methods.

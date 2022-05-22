@@ -25,6 +25,6 @@ const (
 
 // Sprintf colorizes the provided string by wrapping
 // it inside an ANSI color escape sequence
-func (c ColorCode) Sprintf(a interface{}) string {
+func (c ColorCode) Sprintf(a any) string {
 	return fmt.Sprintf("\033[1;%dm%s\033[0m", c, a)
 }

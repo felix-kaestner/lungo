@@ -15,7 +15,7 @@ import (
 
 const LogRegex = `^\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2} GET / ((\d*[.])?\d+)µs$`
 
-func assertEqual(t *testing.T, expected, actual interface{}) {
+func assertEqual(t *testing.T, expected, actual any) {
 	if reflect.DeepEqual(expected, actual) {
 		return
 	}
