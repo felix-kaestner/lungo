@@ -16,12 +16,12 @@ func TestFileServer(t *testing.T) {
 		{
 			dir:         ".github/",
 			path:        "/labeler.yml",
-			contentType: "application/x-yaml",
+			contentType: "application/yaml",
 		},
 		{
 			dir:         ".github/",
 			path:        "labeler.yml",
-			contentType: "application/x-yaml",
+			contentType: "application/yaml",
 		},
 		{
 			dir:         "./",
@@ -48,7 +48,7 @@ func TestFileServer(t *testing.T) {
 		header := rr.Header()
 
 		ct := header.Get(HeaderContentType)
-		if ct != testcase.contentType && ct != MIMETextPlainCharsetUTF8 {
+		if ct != testcase.contentType && ct != "application/x-yaml" && ct != MIMETextPlainCharsetUTF8 {
 			t.Errorf("Test %s: Expected HTTP Content-Type to be either `%v` or `%v` (type string), Received `%v` (type %v)", t.Name(), testcase.contentType, "text/plain; charset=utf-8", ct, reflect.TypeOf(ct))
 		}
 	}
