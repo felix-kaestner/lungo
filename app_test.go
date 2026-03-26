@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/tls"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
@@ -100,6 +101,8 @@ func TestAppServeTLS(t *testing.T) {
 		cerr <- app.ServeTLS(ln, "cert.pem", "key.pem")
 	}()
 
+	client := &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}} //nolint:gosec
+
 	ticker := time.NewTicker(5 * time.Millisecond)
 	defer ticker.Stop()
 
@@ -110,7 +113,7 @@ wait:
 			break wait
 
 		case <-ticker.C:
-			_, err := http.Get("http://0.0.0.0:8000")
+			_, err := client.Get("https://0.0.0.0:8000")
 			if err == nil {
 				break wait
 			}
@@ -180,6 +183,8 @@ func TestAppListenTLS(t *testing.T) {
 		cerr <- app.ListenTLS("0.0.0.0:8000", "cert.pem", "key.pem")
 	}()
 
+	client := &http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}} //nolint:gosec
+
 	ticker := time.NewTicker(5 * time.Millisecond)
 	defer ticker.Stop()
 
@@ -190,7 +195,7 @@ wait:
 			break wait
 
 		case <-ticker.C:
-			_, err := http.Get("http://0.0.0.0:8000")
+			_, err := client.Get("https://0.0.0.0:8000")
 			if err == nil {
 				break wait
 			}
@@ -223,7 +228,7 @@ func TestAppShutdown(t *testing.T) {
 }
 
 func TestApp(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		path    string
 		method  string
 		status  int
@@ -375,7 +380,7 @@ func TestAppAll(t *testing.T) {
 }
 
 func TestAppStatic(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		dir    string
 		path   string
 		status int
@@ -439,7 +444,7 @@ func TestAppMiddleware(t *testing.T) {
 }
 
 func TestAppMount(t *testing.T) {
-	var tests = []struct {
+	tests := []struct {
 		mountPath   string
 		handlerPath string
 		requestPath string
@@ -520,7 +525,7 @@ func GenerateCertificate(t *testing.T) {
 		t.Fatalf("Error closing cert.pem: %v", err)
 	}
 
-	keyOut, err := os.OpenFile("key.pem", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+	keyOut, err := os.OpenFile("key.pem", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o600)
 	if err != nil {
 		t.Fatalf("Failed to open key.pem for writing: %v", err)
 	}
