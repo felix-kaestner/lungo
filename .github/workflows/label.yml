@@ -16,6 +16,6 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4
 
-    - uses: actions/labeler@v5
+    - uses: actions/labeler@v6
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
